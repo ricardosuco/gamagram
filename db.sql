@@ -1,0 +1,62 @@
+
+CREATE DATABASE gamagram; 
+
+DROP TABLE IF EXISTS usuarios;
+
+CREATE TABLE usuarios (
+    id serial primary key,
+    nome text not null,
+    imagem text,
+    username text not null unique,
+    email text not null unique,
+    password text not null,
+    site text,
+    bio text,
+    telefone text,
+    genero text
+);
+
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE posts (
+    id serial primary key,
+    usuario_id int not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now(),
+    legenda text not null,
+    foreign key (usuario_id) references usuarios (id)
+);
+
+DROP TABLE IF EXISTS comentarios;
+
+CREATE TABLE comentarios (
+    id serial primary key,
+    post_id int not null,
+    usuario_id int not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now(),
+    conteudo text not null,
+    foreign key (post_id) references posts (id),
+    foreign key (usuario_id) references usuarios (id)
+);
+
+DROP TABLE IF EXISTS fotos;
+
+CREATE TABLE fotos (
+    id serial primary key,
+    post_id int not null,
+    created_at timestamp default now(),
+    updated_at timestamp default now(),
+    imagem text not null,
+    foreign key (post_id) references posts (id)
+);
+
+DROP TABLE IF EXISTS likes;
+
+DROP TABLE IF EXISTS likes (
+    post_id int not null,
+    usuario_id int not null,
+    foreign key (post_id) references posts (id),
+    foreign key (usuario_id) references usuarios (id)
+)
+
