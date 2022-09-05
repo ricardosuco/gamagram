@@ -53,7 +53,7 @@ CREATE TABLE fotos (
 
 DROP TABLE IF EXISTS likes;
 
-DROP TABLE IF EXISTS likes (
+CREATE TABLE likes (
     post_id int not null,
     usuario_id int not null,
     foreign key (post_id) references posts (id),
