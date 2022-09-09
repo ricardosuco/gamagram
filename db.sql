@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`posts` (
   `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `caption` TEXT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `usuario_id` (`user_id` ASC) VISIBLE,
+  INDEX `user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `posts_ibfk_1`
     FOREIGN KEY (`user_id`)
     REFERENCES `gamagram`.`users` (`id`))
@@ -63,11 +63,11 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`comments` (
   `content` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `post_id` (`post_id` ASC) VISIBLE,
-  INDEX `usuario_id` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `comentarios_ibfk_1`
+  INDEX `user_id` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `comments_ibfk_1`
     FOREIGN KEY (`post_id`)
     REFERENCES `gamagram`.`posts` (`id`),
-  CONSTRAINT `comentarios_ibfk_2`
+  CONSTRAINT `comments_ibfk_2`
     FOREIGN KEY (`user_id`)
     REFERENCES `gamagram`.`users` (`id`))
 ENGINE = InnoDB
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`photos` (
   `image` TEXT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `post_id` (`post_id` ASC) VISIBLE,
-  CONSTRAINT `fotos_ibfk_1`
+  CONSTRAINT `photos_ibfk_1`
     FOREIGN KEY (`post_id`)
     REFERENCES `gamagram`.`posts` (`id`))
 ENGINE = InnoDB
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`likes` (
   `post_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   INDEX `post_id` (`post_id` ASC) VISIBLE,
-  INDEX `usuario_id` (`user_id` ASC) VISIBLE,
+  INDEX `user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `likes_ibfk_1`
     FOREIGN KEY (`post_id`)
     REFERENCES `gamagram`.`posts` (`id`),
