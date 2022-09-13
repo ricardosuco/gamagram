@@ -17,10 +17,10 @@ API no intuito de simular uma rede social
 
 #### **Tecnologias**
 
-  ![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)
   ![Node.js](https://img.shields.io/badge/-Node.js-333333?style=flat&logo=node.js) 
-  ![Express](https://img.shields.io/badge/-Express-333333?style=flat&logo=express)
   ![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql) 
+  ![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)
+  ![Express](https://img.shields.io/badge/-Express-333333?style=flat&logo=express)
 
 #### **Testes**
 
@@ -34,8 +34,7 @@ API no intuito de simular uma rede social
 #### **Ferramentas de Desenvolvimento**
 
   ![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-333333?style=flat&logo=visual-studio-code&logoColor=007ACC)
-  
-  ![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)\
+  ![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)
   <br>
   
 
