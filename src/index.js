@@ -15,7 +15,7 @@ const authRoute = require('./routes/auth');
   db.createDB();
   UserModel.createUserTable();
  // UserModel.findUser({email:"mail@birb.com"})
- UserModel.findById({id:3})
+// UserModel.findById({id:3})
 
 
   //middleware
