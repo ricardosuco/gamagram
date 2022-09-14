@@ -66,29 +66,158 @@ API no intuito de simular uma rede social
 
 <br>
 
+# Gamagram
+
+## O que será possivel fazer
+- Cadastro
+- Login
+- Ver os dados do perfil
+- Editar dados do perfil
+- Ver postagens de outros usuários
+		- Ver quantidade de curtidas numa postagem
+		- Ver os comentários em uma postagem
+- Curtir postagens
+- Excluir o próprio comentário
+- Excluir o próprio post
+- Editar o próprio post
+- Editar o próprio comentário
+- Buscar usuários
+
+## O que não será possível fazer
+- Ver a localização de uma postagem
+- Ver usuarios que curtiram as postagens 
+- Curtir comentários
+- Comentar em outros comentários
+- Publicar stories
+- Adicionar filtros nas imagens
+- Seguir usuários
+
 # Endpoints
 
 
-### GET
+### [GET] - Usuário - "/username"
 
 #### Dados Enviados
-
+- Token
+  
 #### Dados Retornados
+- URL da foto de perfil
+- Nome
+- Username
+- Bio
+- Email
+- Telefone
+- Genero
+ ---
 
-### POST
+### [POST] - Usuário - "/user/:id"
 
 #### Dados Enviados
-
+- URL da foto de perfil
+- Nome
+- Username
+- Senha
+- Bio
+- Email
+- Telefone
+- Genero
+  
 #### Dados Retornados
-
-### PUT
+- Sucesso / Erro
+ 
+### [PUT] - Usuário - "/user/:id"
 
 #### Dados Enviados
-
+- Token
+- URL da foto de perfil
+- Nome
+- Username
+- Bio
+- Email
+- Telefone
+- Genero
+  
 #### Dados Retornados
-
-### DELETE
-
+- Sucesso / Erro
+ 
+### [GET]  - Post - "/post"
 #### Dados Enviados
+- Token
+#### Dados Retornados
+- Postagens [ ]
+	- ID
+	- Usuario
+		- URL da foto
+		- username
+	- Fotos [ ]
+	- Quantidade de curtidas
+	- Curtida pelo usuario logado
+	- Comentarios
+		- Username
+		- Texto do comentario
+	- Data
+---
+
+### [POST]  - Post - "/post"
+#### Dados Enviados
+- Token
+- URL da Foto
+- Texto da legenda
+#### Dados Retornados
+- Sucesso / Erro
+---
+
+### [PUT]  - Post - "/post/:id"
+#### Dados Enviados
+- Token
+- ID do post a ser alterado
+- URL da Foto
+- Texto da legenda
+#### Dados Retornados
+- Sucesso / Erro
+---
+
+### [DELETE] - Postagem - "/post/:id"
+#### Dados Enviados
+- Token
+- ID da postagem
+  
+#### Dados Retornados
+- Sucesso/Erro
+---
+
+### [POST] - Login - "/login"
+#### Dados Enviados
+- username ou email
+- senha
+#### Dados Retornados
+- Token de autenticação
+---
+
+### [PUT] - Comentário - "/comments"
+#### Dados enviados
+- Id do post a ser comentado
+- Texto do comentário
+#### Dados Retornados
+- Sucesso / erro
+---
+
+### [PUT] - Comentário - "/comments/:id"
+#### Dados enviados
+- Id do post a ser comentado
+- Id do comentario a ser alterado
+- Texto do comentário
+#### Dados Retornados
+- Sucesso / erro
+--- 
+
+### [DELETE] - Comentário - "/comments/:id"
+#### Dados Enviados
+- Token
+- ID do comentario
 
 #### Dados Retornados
+- Sucesso/Erro
+
+
+
