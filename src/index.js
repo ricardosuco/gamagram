@@ -6,15 +6,15 @@ const db = require('./db');
 const UserModel = require('./models/User')
 const morgan = require('morgan');
 const helmet = require('helmet');
-const userRoute = require('./routes');
-const authRoute = require('./routes');
+// const userRoute = require('./routes');
+// const authRoute = require('./routes');
 const app = require('./server');
 
 
 //fazendo a conexão com o banco
-  db.connectDB();
-  db.createDB();
-  UserModel.createUserTable();
+  // db.connectDB();
+  // db.createDB();
+  // UserModel.createUserTable();
  // UserModel.findUser({email:"mail@birb.com"})
 // UserModel.findById({id:3})
 

@@ -1,5 +1,5 @@
-
-
+const knexfile = require('../knexfile')
+const knex = require('knex')(knexfile)
 class CommentsController {
 
     async list(req, res) { }

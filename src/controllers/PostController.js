@@ -1,3 +1,5 @@
+const knexfile = require('../knexfile')
+const knex = require('knex')(knexfile)
 const fs = require('fs/promises')
 const { uploadImage, deleteImage } = require('../services')
 

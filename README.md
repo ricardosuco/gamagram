@@ -58,6 +58,8 @@ API no intuito de simular uma rede social
 > npm i --save-dev ts-node-dev
 ### para instalar o http-status-codes
 > npm i --save http-status-codes
+### para rodar as migrations
+> npx knex migrate:latest
 
 <br>
 
