@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const User = require('../models/User')
 const bcrypt = require('bcrypt');
-const { json } = require('express');
 
 //Registrando usuario
 router.post("/register", async (req,res)=>{
@@ -11,7 +10,7 @@ router.post("/register", async (req,res)=>{
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
-    const user = await User.newUser({
+    const user = await User.create({
         name: req.body.name,
         image: req.body.image,
         username: req.body.username,
@@ -34,15 +33,13 @@ router.post("/register", async (req,res)=>{
 //Fazendo o login
 router.post('/login',  async(req,res)=>{
    try {
-      const user = await User.findUser({email:req.body.email});
-      user != '[object Object]' && res.status(404).send("Usuário não foi encontrado! ");
-      // console.log(req.body.password+ user.shift().password);
-
-      const validPassword =  await bcrypt.compare(req.body.password, user.shift().password )
+      const user = await User.findOne({ where: {email:req.body.email}});
+      const validPassword =  await bcrypt.compare(req.body.password, user.password );
+   
+      !user && res.status(404).json("usuario nao encontrado")
       !validPassword && res.status(400).json("Senha incorreta!");
-      validPassword && res.status(200).json(await User.findUser({email:req.body.email}))
- 
 
+      res.status(200).json(user)
    } catch (error) {
     res.status(500).json(error)
    }
