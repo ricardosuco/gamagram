@@ -2,16 +2,36 @@ const knexfile = require("../knexfile");
 const knex = require("knex")(knexfile);
 const { uploadImage, deleteImage } = require("../services");
 
-//Aqui terá toda a regra de negocio que envolve o upload das imagens e a listagem de comentarios.
-// Os comentarios devem ser retornados junto a cada post
+//TODO: Inserir quantidade de comentarios e quantidade de curtidas por postagem (criar rotina que conta comentarios e curtidas)
 
-//TODO: Concluir a regra de negocio do list e do show; Criar a rotina de update
-
-const list = async (req, res) => {
+// Retorna todos os posts cadastrados no banco de dados, exceto do usuario atual. Este é o "feed"
+const listAllPosts = async (req, res) => {
     const { id } = req.user
 
     try {
-        let posts = await knex("posts").where("user_id", "!=", id).orderBy("created_at", "desc")
+        let posts = await knex("posts")
+            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username")
+            .where("user_id", "!=", id)
+            .innerJoin("users", "posts.user_id", "users.id")
+            .orderBy("created_at", "desc")
+        if (!posts || posts.length < 1) {
+            return res.status(400).json({ message: "Nenhum post encontrado" });
+        }
+
+        let photos = await knex("photos")
+        let arrPosts = []
+        posts.forEach((post) =>{
+            let arrPhotos = []
+            photos.forEach((photo) =>{
+                if (post.post_id === photo.post_id){
+                    arrPhotos.push(photo.image)
+                }
+            })
+
+            post.image = arrPhotos
+            arrPosts.push(post)
+        })
+        return res.status(200).json(arrPosts)
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Ocorreu um erro inesperado" });
@@ -19,22 +39,40 @@ const list = async (req, res) => {
         
 };
 
-const show = async (req, res) => {
-    const { id } = req.user
+//Retorna post referente ao id passado por parametro junto com todos os comentarios e likes
+const showPostById = async (req, res) => {
+    const { id } = req.params
 
     try {
-        let posts = await knex("posts").where("user_id", id).innerJoin("photos", "posts.id", "photos.post_id")
-        if (!posts) {
-            return res.status(400).json({ message: "Não há posts deste usuário" });
+        let posts = await knex("posts").where("posts.id", id)
+            .select("posts.id as post_id", "users.id as user_id", "posts.caption", "posts.created_at", "users.username", "photos.image")
+            .innerJoin("photos", "posts.id", "photos.post_id")
+            .innerJoin("users", "posts.user_id", "users.id")
+        let comments = await knex("comments")
+            .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at")
+            .where("comments.post_id", id)
+            .innerJoin("users", "comments.user_id", "users.id")
+        if (!posts || posts.length < 1) {
+            return res.status(400).json({ message: "Post não encontrado" });
         } 
-        return res.status(200).json(posts);
+        if (posts.length > 1) {
+            let arrPhotos = [];
+            posts.forEach((item) => {
+                arrPhotos.push({
+                    image: item.image
+                })
+            })
+            posts[0].image = arrPhotos;
+        }
+        posts[0].comments = comments;
+        return res.status(200).json(posts[0]);
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Ocorreu um erro inesperado" });
     }
 };
 
-const create = async (req, res) => {
+const createNewPost = async (req, res) => {
 
   //Verifica se existe imagem na request
   if (!req.files) {
@@ -43,11 +81,10 @@ const create = async (req, res) => {
   const { caption } = req.body;
   const { image } = req.files;
   const { id } = req.user;
-
   try {
-    //Instancia o db com transaction para reverter alteração caso dê erro
-    await knex.transaction(async (trx) => {
-    const [post_id] = await trx("posts").insert({caption, user_id: id});
+      //Instancia o db com transaction para reverter alteração caso ocorra erro
+    let trx = await knex.transaction();
+    const [post_id] = await knex("posts").transacting(trx).insert({caption, user_id: id});
     if (!post_id) {
       return res.status(400).json({ message: "Erro ao criar post" });
     }
@@ -56,6 +93,7 @@ const create = async (req, res) => {
         image.forEach(async (item) => {
             let extension = item.name.split(".").pop();
             if (extension.toLowerCase() !== "jpg" && extension.toLowerCase() !== "png") {
+                trx.rollback();
                 return res.status(400).json({ message: "Formato de imagem inválido" });
             }
             item.name = new Date().getTime() + "." + extension
@@ -65,16 +103,19 @@ const create = async (req, res) => {
             })
             let photo = await uploadImage(item.name, item.data)
         })
-        let insertedPhotos = await trx("photos").insert(arrImages)
+        let insertedPhotos = await knex("photos").transacting(trx).insert(arrImages)
         if (!insertedPhotos) {
+            trx.rollback();
             return res.status(400).json({ message: "Erro ao criar post" });
         }
+        trx.commit();
         return res.status(200).json({message: "Post criado com sucesso"})
     }
 
     //Valida extensão da imagem
     let extension = image.name.split(".").pop();
     if (extension.toLowerCase() !== "jpg" && extension.toLowerCase() !== "png") {
+        trx.rollback();
         return res.status(400).json({ message: "Formato de imagem inválido" });
     }
 
@@ -82,37 +123,59 @@ const create = async (req, res) => {
     image.name = new Date().getTime() + "." + extension;
     let photo = await uploadImage(image.name, image.data);
     
-    let insertedPhoto = await trx("photos").insert({image: photo, post_id})
+    let insertedPhoto = await knex("photos").transacting(trx).insert({image: photo, post_id})
     if (!insertedPhoto) {
+        trx.rollback();
         return res.status(400).json({message: "Erro ao criar post"})
     }
+    trx.commit();
     return res.status(201).json({message: "Post criado com sucesso!"});
-    });
   } catch (error) {
+    trx.rollback();
     console.log(error);
     return res.status(500).json({ message: "Ocorreu um erro inesperado" });
   }
 };
 
-const update = async (req, res) => {
-    //Criar rota para atualizar post
-};
+//Atualiza post do usuario logado a partir do id post
+const updatePost = async (req, res) => {
+    const { id } = req.params
+    const user_id = req.user.id
+    const { caption } = req.body
 
+    try {
+        let updatedPost = await knex("posts").where("id", id).andWhere("user_id", user_id).update({caption})
+        if (!updatedPost) {
+            return res.status(400).json({message: "Erro ao atualizar post"})
+        } 
+            return res.status(200).json({message: "Post atualizado com sucesso"})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: "Ocorreu um erro inesperado" });
+    }
+        
+}
+
+//Deleta post do usuario logado a partir do id do post
 const deletePost = async (req, res) => {
     const { id } = req.params
     const user_id = req.user.id
 
     try {
-        let deletedPost = await knex("posts").where({id, user_id}).del()
-        if (!deletedPost) {
-            return res.status(401).json({message: "Erro ao deletar post"})
+        let deletedPost = await knex("posts").select("image", "posts.id").innerJoin("photos", "posts.id", "photos.post_id").where("posts.id", id).andWhere("posts.user_id", user_id)
+        if (!deletedPost || deletedPost.length < 1) {
+            return res.status(400).json({ message: "Post não encontrado" });
         }
-    
-        return res.status(200).json({message: "Post deletado com sucesso"})
+            deletedPost.forEach(async (item) => {
+                let name = item.image.split("/").pop()
+                await deleteImage(name)
+                await knex("posts").where("id", item.id).del()
+            })
+            return res.status(200).json({message: "Post deletado com sucesso"})
     } catch(error) {
         console.log(error)
         return res.status(500).json({ message: "Ocorreu um erro inesperado" });
     }
 };
 
-module.exports = { list, show, create, update, deletePost };
+module.exports = { listAllPosts, showPostById, createNewPost, updatePost, deletePost };
