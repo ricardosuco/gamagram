@@ -14,7 +14,7 @@
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
       table.string('content').notNullable();
-      table.timestamps(true, true);
+      table.timestamp('created_at').defaultTo(knex.fn.now())
     })
   };
   
