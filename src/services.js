@@ -9,13 +9,14 @@ const s3Instance = new aws.S3({
 })
 
 const uploadImage = async(name, image) => {
-	return await s3Instance.putObject({
+	await s3Instance.putObject({
 		Bucket: process.env.AWS_BUCKET_NAME, 
 		Key: name,
 		Body: image,
 		ContentType: 'image/png',
 		ACL: 'public-read',
 	}).promise()
+	return process.env.AWS_BUCKET_URL + name
 }
 
 const deleteImage = async(name) => {
