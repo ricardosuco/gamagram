@@ -71,28 +71,31 @@ API no intuito de simular uma rede social
 # Gamagram
 
 ## O que será possivel fazer
-- Cadastro
-- Login
-- Ver os dados do perfil
-- Editar dados do perfil
-- Ver postagens de outros usuários
-		- Ver quantidade de curtidas numa postagem
-		- Ver os comentários em uma postagem
-- Curtir postagens
-- Excluir o próprio comentário
-- Excluir o próprio post
-- Editar o próprio post
-- Editar o próprio comentário
-- Buscar usuários
+ - [x] Cadastro 
+ - [x] Login
+ - [x] Ver os dados do perfil
+ - [x] Editar dados do perfil
+ - [x] Ver postagens de outros usuários
+- [ ] Ver quantidade de curtidas numa postagem
+- [x] Ver os comentários em uma postagem
+ - [ ] Curtir postagens
+ - [x] Comentar posts
+ - [ ] Descurtir posts
+ - [x] Excluir o próprio comentário
+ - [x] Criar post
+ - [x] Excluir o próprio post
+ - [x] Editar o próprio post
+ - [x] Editar o próprio comentário
+ - [x] Buscar usuários
 
 ## O que não será possível fazer
-- Ver a localização de uma postagem
-- Ver usuarios que curtiram as postagens 
-- Curtir comentários
-- Comentar em outros comentários
-- Publicar stories
-- Adicionar filtros nas imagens
-- Seguir usuários
+ - Ver a localização de uma postagem
+ - Ver usuarios que curtiram as postagens 
+ - Curtir comentários
+ - Comentar em outros comentários
+ - Publicar stories
+ - Adicionar filtros nas imagens
+ - Seguir usuários
 
 # Endpoints
 
