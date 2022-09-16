@@ -14,7 +14,7 @@
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
       table.string('content').notNullable();
-      table.timestamps(true);
+      table.timestamps(true, true);
     })
   };
   

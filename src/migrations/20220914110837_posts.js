@@ -7,9 +7,8 @@
             .inTable('users')
             .onUpdate('CASCADE')
             .onDelete('CASCADE')
-        table.string('image').notNullable();
         table.string('caption').notNullable();
-        table.timestamps(true);
+        table.timestamps(true,true);
       })
 };
 

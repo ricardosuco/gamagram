@@ -9,7 +9,7 @@ exports.up = function (knex) {
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
     table.string("image").notNullable();
-    table.timestamps(true);
+    table.timestamps(true, true);
   });
 };
 
