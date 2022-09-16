@@ -8,7 +8,6 @@ exports.up = function (knex) {
         .inTable("posts")
         .onDelete("CASCADE")
         .onUpdate("CASCADE");
-      table.string("image").notNullable();
       table
         .integer("post_id")
         .unsigned()
