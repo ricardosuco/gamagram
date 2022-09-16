@@ -1,16 +1,10 @@
-const knexfile = require('../knexfile')
-const knex = require('knex')(knexfile)
-class LikeController {
+const knexfile = require("../knexfile");
+const knex = require("knex")(knexfile);
 
-    async list(req, res) { }
+const list = async (req, res) => { };
 
-    async show (req, res) { }
+const create = async (req, res) => { };
 
-    async create(req, res) { }
+const update = async (req, res) => { };
 
-    async update(req, res) { }
-
-    async delete(req, res) { }
-}
-
-module.exports = LikeController
+module.exports = { list, create, update };

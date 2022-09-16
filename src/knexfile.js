@@ -1,3 +1,5 @@
+// require('dotenv').config()
+// console.log(process.env)
 const { resolve } = require('path');
 module.exports = {
   client: process.env.DB_CLIENT,
