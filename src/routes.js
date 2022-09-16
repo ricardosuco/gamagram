@@ -14,22 +14,22 @@ routes.use(auth)
 // Rotas autenticadas
  
 //User
-routes.get('/users', userController.list)
-routes.get('/:username', userController.show)
-routes.put('/user', userController.update)
+routes.get('/users', userController.listAllUsers)
+routes.get('/user/:username', userController.showUserByUsername)
+routes.put('/user', userController.updateUser)
 routes.delete('/user', userController.deleteUser)
 
 //Post
-routes.get('/posts', postController.list)
-routes.get('/post/:id', postController.show)
-routes.post('/post', postController.create)
-routes.put('/post/:id', postController.update)
+routes.get('/posts', postController.listAllPosts)
+routes.get('/post/:id', postController.showPostById)
+routes.post('/post', postController.createNewPost)
+routes.put('/post/:id', postController.updatePost)
 routes.delete('/post/:id', postController.deletePost)
 
 //Comment
-routes.get('/comments', commentController.list)
-routes.post('/comment', commentController.create)
-routes.put('/comment/:id', commentController.update)
+routes.get('/comment/:post_id', commentController.listAllComments)
+routes.post('/comment', commentController.createNewComment)
+routes.put('/comment/:id', commentController.updateComment)
 routes.delete('/comment/:id', commentController.deleteComment)
 
 
