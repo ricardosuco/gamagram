@@ -24,7 +24,6 @@ CREATE TABLE posts (
     id int not null auto_increment primary key,
     usuario_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now(),
     legenda text not null,
     foreign key (usuario_id) references usuarios (id)
 );
@@ -36,7 +35,6 @@ CREATE TABLE comentarios (
     post_id int not null,
     usuario_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now(),
     conteudo text not null,
     foreign key (post_id) references posts (id),
     foreign key (usuario_id) references usuarios (id)
@@ -48,7 +46,6 @@ CREATE TABLE fotos (
     id int not null auto_increment primary key,
     post_id int not null,
     created_at timestamp default now(),
-    updated_at timestamp default now(),
     imagem text not null,
     foreign key (post_id) references posts (id)
 );
