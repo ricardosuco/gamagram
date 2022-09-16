@@ -2,19 +2,33 @@ const knexfile = require("../knexfile");
 const knex = require("knex")(knexfile);
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { uploadImage, deleteImage } = require('../services');
+const { uploadImage, deleteImage } = require("../services");
 
-const list = async (req, res) => {
+// Retorna todos os usuários cadastrados no banco de dados, exceto o usuário atual logado
+// Filtra por username, name e email, se passado uma querystring com chave "search"
+const listAllUsers = async (req, res) => {
   const { search } = req.query;
+  const { id } = req.user;
   try {
-    let users
+    let users;
     if (search) {
-      users = await knex("users").select("name", "username", "image")
-        .where("name", "like", `%${search}%`)
+      users = await knex("users")
+        .select("name", "username", "image")
+        .orWhere("name", "like", `%${search}%`)
+        .andWhere("id", "!=", id)
         .orWhere("username", "like", `%${search}%`)
-        .orWhere("email", "like", `%${search}%`);
+        .andWhere("id", "!=", id)
+        .orWhere("email", "like", `%${search}%`)
+        .andWhere("id", "!=", id);
     } else {
-      users = await knex("users").select("name", "username", "image");
+      users = await knex("users")
+        .select("name", "username", "image")
+        .where("id", "!=", id);
+    }
+    if (!users || users.length < 1) {
+      return res
+        .status(400)
+        .json({ message: "Não foi encontrado nenhum usuário na pesquisa" });
     }
     res.send(users);
   } catch (error) {
@@ -52,50 +66,49 @@ const login = async (req, res) => {
     const { password, ...user } = foundUser;
     res.status(200).json({ user, token });
   } catch (error) {
+    return res.status(500).json({ message: "Ocorreu um erro inesperado" });
     console.log(error);
-    res.status(500).json({ message: "Ocorreu um erro inesperado" });
   }
 };
 
-const show = async (req, res) => {
+//Exibe um usuario quando passado o username no parametro, uma especie de ver perfil
+const showUserByUsername = async (req, res) => {
   const { username } = req.params;
   try {
-    let user = await knex("users")
-      .where("email", username)
-      .orWhere("username", username)
-      .first();
+    let user = await knex("users").where("username", username).first();
     if (!user) {
       return res.status(400).json({ message: "Usuário não encontrado" });
     }
     const { password, ...foundUser } = user;
-    res.send(foundUser);
+    return res.send(foundUser);
   } catch (error) {
-    res.status(500).json({ message: "Ocorreu um erro inesperado" });
     console.log(error);
+    return res.status(500).json({ message: "Ocorreu um erro inesperado" });
   }
 };
 
 const create = async (req, res) => {
-  const { name, username, email, password, site, bio, phone, gender } =
+  let { name, username, email, password, site, bio, phone, gender } =
     req.body;
 
-  let image
+  let image;
 
   if (req.files) {
-    image = req.files.image
+    image = req.files.image;
   }
 
-
-  if (!name.trim()){
-    return  res.status(400).json({ message: "O campo nome é obrigatório" });
-  } else if (!username.trim()){
+  if (!name.trim()) {
+    return res.status(400).json({ message: "O campo nome é obrigatório" });
+  } else if (!username.trim()) {
     return res.status(400).json({ message: "O usename nome é obrigatório" });
-  } else if (!email.trim()){
+  } else if (!email.trim()) {
     return res.status(400).json({ message: "O email nome é obrigatório" });
-  } else if (!password.trim()){
+  } else if (!password.trim()) {
     return res.status(400).json({ message: "O password nome é obrigatório" });
-  } else if (password.trim().length <  6 ){
-    return res.status(400).json({ message: "A senha deve ter no mínimo 6 caracteres" });
+  } else if (password.trim().length < 6) {
+    return res
+      .status(400)
+      .json({ message: "A senha deve ter no mínimo 6 caracteres" });
   }
 
   try {
@@ -105,25 +118,23 @@ const create = async (req, res) => {
       .orWhere("username", username)
       .first();
     if (verifyEmailAndUsername) {
-      return res
-        .status(400)
-        .json({ message: "Email ou username já existem" });
+      return res.status(400).json({ message: "Email ou username já existem" });
     }
-    let photo = ''
+    let photo = "";
     if (image) {
-    let extension = image.name.split(".").pop();
-    image.name = new Date().getTime() + "." + extension;
-    photo = await uploadImage(image.name, image.data);
+      let extension = image.name.split(".").pop();
+      image.name = new Date().getTime() + "." + extension;
+      photo = await uploadImage(image.name, image.data);
     }
 
-    const encriptedPassword = await bcrypt.hash(password, 10);
+    password = await bcrypt.hash(password, 10);
 
     const user = await knex("users").insert({
       name,
       image: photo,
       username,
       email,
-      password: encriptedPassword,
+      password,
       site,
       bio,
       phone,
@@ -136,8 +147,72 @@ const create = async (req, res) => {
     return res.status(500).json({ message: "Ocorreu um erro inesperado" });
   }
 };
-const update = async (req, res) => {
-  //Criar update User
+const updateUser = async (req, res) => {
+  const { id } = req.user;
+  let { name, username, email, password, site, bio, phone, gender } =
+    req.body;
+
+  let image;
+
+  if (req.files) {
+    image = req.files.image;
+  }
+
+  if (!name.trim()) {
+    return res.status(400).json({ message: "O campo nome é obrigatório" });
+  } else if (!username.trim()) {
+    return res.status(400).json({ message: "O usename nome é obrigatório" });
+  } else if (!email.trim()) {
+    return res.status(400).json({ message: "O email nome é obrigatório" });
+  } else if (password && password.trim().length < 6) {
+    return res
+      .status(400)
+      .json({ message: "A senha deve ter no mínimo 6 caracteres" });
+  }
+
+  try {
+    if (req.user.email !== email || req.user.username !== username) {
+    const verifyEmailAndUsername = await knex("users")
+      .where("email", email)
+      .orWhere("username", username)
+      .first();
+    if (verifyEmailAndUsername) {
+      return res.status(400).json({ message: "Email ou username já existem" });
+    }
+  }
+
+    let photo = "";
+    if (image) {
+      let extension = image.name.split(".").pop();
+      image.name = new Date().getTime() + "." + extension;
+      photo = await uploadImage(image.name, image.data);
+    }
+
+    if (password) {
+      password = await bcrypt.hash(password, 10);
+    }
+
+    let userUpdated = await knex("users").where("id", id).update({
+        name,
+        image: photo,
+        username,
+        email,
+        password,
+        site,
+        bio,
+        phone,
+        gender
+    })
+    if (!userUpdated) {
+      return res
+        .status(400)
+        .json({ message: "Não foi possível atualizar o usuário" });
+    }
+    return res.status(200).json({ message: "Usuário atualizado com sucesso" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Ocorreu um erro inesperado" });
+  }
 };
 
 const deleteUser = async (req, res) => {
@@ -158,4 +233,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { list, show, create, update, deleteUser, login };
+module.exports = {
+  listAllUsers,
+  showUserByUsername,
+  create,
+  updateUser,
+  deleteUser,
+  login,
+};
