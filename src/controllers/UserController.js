@@ -76,8 +76,15 @@ const show = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { name, image, username, email, password, site, bio, phone, gender } =
+  const { name, username, email, password, site, bio, phone, gender } =
     req.body;
+
+  let image
+
+  if (req.files) {
+    image = req.files.image
+  }
+
 
   if (!name.trim()){
     return  res.status(400).json({ message: "O campo nome é obrigatório" });
@@ -102,12 +109,18 @@ const create = async (req, res) => {
         .status(400)
         .json({ message: "Email ou username já existem" });
     }
+    let photo = ''
+    if (image) {
+    let extension = image.name.split(".").pop();
+    image.name = new Date().getTime() + "." + extension;
+    photo = await uploadImage(image.name, image.data);
+    }
 
     const encriptedPassword = await bcrypt.hash(password, 10);
 
     const user = await knex("users").insert({
       name,
-      image,
+      image: photo,
       username,
       email,
       password: encriptedPassword,
@@ -123,7 +136,9 @@ const create = async (req, res) => {
     return res.status(500).json({ message: "Ocorreu um erro inesperado" });
   }
 };
-const update = async (req, res) => {};
+const update = async (req, res) => {
+  //Criar update User
+};
 
 const deleteUser = async (req, res) => {
   const { id } = req.user;
