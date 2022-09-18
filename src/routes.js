@@ -2,6 +2,7 @@ const express = require('express')
 const userController = require('./controllers/userController')
 const commentController = require('./controllers/CommentController')
 const postController = require('./controllers/postController')
+const likeController = require('./controllers/likeController')
 const auth = require('./middleware/auth')
 
 const routes = express();
@@ -31,6 +32,9 @@ routes.get('/comment/:post_id', commentController.listAllComments)
 routes.post('/comment', commentController.createNewComment)
 routes.put('/comment/:id', commentController.updateComment)
 routes.delete('/comment/:id', commentController.deleteComment)
+
+//Like
+routes.put('/like/:post_id', likeController.create)
 
 
 module.exports = routes
