@@ -8,7 +8,8 @@
             .onUpdate('CASCADE')
             .onDelete('CASCADE')
         table.string('caption').notNullable();
-        table.timestamp('created_at').defaultTo(knex.fn.now())
+        // table.timestamp('created_at').defaultTo(knex.fn.now())
+        table.timestamps(true, true);
       })
 };
 
