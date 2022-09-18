@@ -17,24 +17,25 @@ API no intuito de simular uma rede social
 
 #### **Tecnologias**
 
-  ![Node.js](https://img.shields.io/badge/-Node.js-333333?style=flat&logo=node.js) 
-  ![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql) 
-  ![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)
-  ![Express](https://img.shields.io/badge/-Express-333333?style=flat&logo=express)
+ [![Node.js](https://img.shields.io/badge/-Node.js-333333?style=flat&logo=node.js)](https://nodejs.org/pt-br/)
+ [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
+ [![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+ [![Express](https://img.shields.io/badge/-Express-333333?style=flat&logo=express)](http://expressjs.com/pt-br/)
 
 #### **Testes**
 
-  ![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)
-  ![Postman](https://img.shields.io/badge/-Postman-333333?style=flat&logo=postman)
+  [![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)](https://insomnia.rest/download)
+  [![Postman](https://img.shields.io/badge/-Postman-333333?style=flat&logo=postman)](https://www.postman.com/)
 
 #### **DevOps**
 
-  ![GitHub](https://img.shields.io/badge/-GitHub-333333?style=flat&logo=github)
+  [![GitHub](https://img.shields.io/badge/-GitHub-333333?style=flat&logo=github)](https://github.com)
 
 #### **Ferramentas de Desenvolvimento**
 
-  ![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-333333?style=flat&logo=visual-studio-code&logoColor=007ACC)
-  ![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)
+  [![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-333333?style=flat&logo=visual-studio-code&logoColor=007ACC)](https://code.visualstudio.com/)
+  [![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)](https://insomnia.rest/download)
+  [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
   <br>
   
 
