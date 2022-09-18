@@ -1,50 +1,50 @@
 
 CREATE DATABASE gamagram; 
 
-DROP TABLE IF EXISTS usuarios;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE usuarios (
+CREATE TABLE users (
     id serial primary key,
-    nome text not null,
-    imagem text,
+    name text not null,
+    image text,
     username text not null unique,
     email text not null unique,
     password text not null,
     site text,
     bio text,
-    telefone text,
-    genero text
+    telephone text,
+    gender text
 );
 
 DROP TABLE IF EXISTS posts;
 
 CREATE TABLE posts (
     id serial primary key,
-    usuario_id int not null,
+    user_id int not null,
     created_at timestamp default now(),
-    legenda text not null,
-    foreign key (usuario_id) references usuarios (id)
+    caption text not null,
+    foreign key (user_id) references users (id)
 );
 
-DROP TABLE IF EXISTS comentarios;
+DROP TABLE IF EXISTS comments;
 
-CREATE TABLE comentarios (
+CREATE TABLE comments (
     id serial primary key,
     post_id int not null,
-    usuario_id int not null,
+    usuer_id int not null,
     created_at timestamp default now(),
-    conteudo text not null,
+    content text not null,
     foreign key (post_id) references posts (id),
-    foreign key (usuario_id) references usuarios (id)
+    foreign key (user_id) references users (id)
 );
 
-DROP TABLE IF EXISTS fotos;
+DROP TABLE IF EXISTS photos;
 
-CREATE TABLE fotos (
+CREATE TABLE photos (
     id serial primary key,
     post_id int not null,
     created_at timestamp default now(),
-    imagem text not null,
+    image text not null,
     foreign key (post_id) references posts (id)
 );
 
@@ -52,8 +52,8 @@ DROP TABLE IF EXISTS likes;
 
 CREATE TABLE likes (
     post_id int not null,
-    usuario_id int not null,
+    user_id int not null,
     foreign key (post_id) references posts (id),
-    foreign key (usuario_id) references usuarios (id)
+    foreign key (user_id) references user (id)
 )
 
