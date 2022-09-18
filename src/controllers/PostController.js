@@ -20,14 +20,15 @@ const listAllPosts = async (req, res) => {
 
         let photos = await knex("photos")
         let arrPosts = []
-        posts.forEach((post) =>{
+        posts.forEach(async (post) =>{
             let arrPhotos = []
             photos.forEach((photo) =>{
                 if (post.post_id === photo.post_id){
                     arrPhotos.push(photo.image)
                 }
             })
-
+            let like = await knex("likes").where({user_id}).andWhere({post_id: id}).first()
+            like ? post.like = true : post.like = false
             post.image = arrPhotos
             arrPosts.push(post)
         })
@@ -41,6 +42,7 @@ const listAllPosts = async (req, res) => {
 
 //Retorna post referente ao id passado por parametro junto com todos os comentarios e likes
 const showPostById = async (req, res) => {
+    const user_id = req.user.id;
     const { id } = req.params
 
     try {
@@ -48,6 +50,7 @@ const showPostById = async (req, res) => {
             .select("posts.id as post_id", "users.id as user_id", "posts.caption", "posts.created_at", "users.username", "photos.image")
             .innerJoin("photos", "posts.id", "photos.post_id")
             .innerJoin("users", "posts.user_id", "users.id")
+            console.log(posts)
         let comments = await knex("comments")
             .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at")
             .where("comments.post_id", id)
@@ -57,13 +60,17 @@ const showPostById = async (req, res) => {
         } 
         if (posts.length > 1) {
             let arrPhotos = [];
-            posts.forEach((item) => {
+            posts.forEach(async (item) => {
                 arrPhotos.push({
                     image: item.image
                 })
+            let like = await knex("likes").where({user_id}).andWhere({post_id: id}).first()
+            like ? item.like = true : item.like = false
             })
             posts[0].image = arrPhotos;
         }
+        let like = await knex("likes").where({user_id}).andWhere({post_id: id}).first()
+        like ? posts[0].like = true : posts[0].like = false
         posts[0].comments = comments;
         return res.status(200).json(posts[0]);
     } catch (error) {
@@ -81,10 +88,12 @@ const createNewPost = async (req, res) => {
   const { caption } = req.body;
   const { image } = req.files;
   const { id } = req.user;
+
+  let trx
   try {
       //Instancia o db com transaction para reverter alteração caso ocorra erro
-    let trx = await knex.transaction();
-    const [post_id] = await knex("posts").transacting(trx).insert({caption, user_id: id});
+    trx = await knex.transaction();
+    let [post_id] = await knex("posts").transacting(trx).insert({caption, user_id: id}).returning('id');
     if (!post_id) {
       return res.status(400).json({ message: "Erro ao criar post" });
     }
@@ -99,7 +108,7 @@ const createNewPost = async (req, res) => {
             item.name = new Date().getTime() + "." + extension
             arrImages.push({
                 image: process.env.AWS_BUCKET_URL + item.name,
-                post_id
+                post_id: post_id.id
             })
             let photo = await uploadImage(item.name, item.data)
         })
