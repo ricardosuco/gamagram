@@ -99,7 +99,7 @@ const create = async (req, res) => {
   if (!name.trim()) {
     return res.status(400).json({ message: "O campo nome é obrigatório" });
   } else if (!username.trim()) {
-    return res.status(400).json({ message: "O usename nome é obrigatório" });
+    return res.status(400).json({ message: "O username nome é obrigatório" });
   } else if (!email.trim()) {
     return res.status(400).json({ message: "O email nome é obrigatório" });
   } else if (!password.trim()) {
@@ -160,7 +160,7 @@ const updateUser = async (req, res) => {
   if (!name.trim()) {
     return res.status(400).json({ message: "O campo nome é obrigatório" });
   } else if (!username.trim()) {
-    return res.status(400).json({ message: "O usename nome é obrigatório" });
+    return res.status(400).json({ message: "O username nome é obrigatório" });
   } else if (!email.trim()) {
     return res.status(400).json({ message: "O email nome é obrigatório" });
   } else if (password && password.trim().length < 6) {
