@@ -34,7 +34,8 @@ routes.put('/comment/:id', commentController.updateComment)
 routes.delete('/comment/:id', commentController.deleteComment)
 
 //Like
-routes.put('/like/:post_id', likeController.create)
+routes.post('/like/:post_id', likeController.create)
+routes.delete('/like/:post_id', likeController.deleteLike)
 
 
 module.exports = routes

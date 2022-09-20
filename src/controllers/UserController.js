@@ -39,7 +39,6 @@ const listAllUsers = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-
   if (!username.trim() || !password.trim())
     res.status(400).json({ message: "O email é obrigatório" });
 
@@ -170,6 +169,7 @@ const updateUser = async (req, res) => {
       .json({ message: "A senha deve ter no mínimo 6 caracteres" });
   }
 
+    //Verificar se isso é mesmo necessário ja que existe a constraints unique
   try {
     if (req.user.email !== email || req.user.username !== username) {
     const verifyEmailAndUsername = await knex("users")
@@ -177,7 +177,7 @@ const updateUser = async (req, res) => {
       .orWhere("username", username)
       .first();
     if (verifyEmailAndUsername) {
-      return res.status(400).json({ message: "Email ou username já existem" });
+      if(verifyEmailAndUsername.id !== id) return res.status(400).json({ message: "Email ou username já existem" });
     }
   }
 

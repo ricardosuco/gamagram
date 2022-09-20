@@ -10,7 +10,7 @@ const listAllPosts = async (req, res) => {
 
     try {
         let posts = await knex("posts")
-            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username")
+            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image")
             .where("user_id", "!=", id)
             .innerJoin("users", "posts.user_id", "users.id")
             .orderBy("created_at", "desc")
@@ -20,6 +20,10 @@ const listAllPosts = async (req, res) => {
 
         let photos = await knex("photos")
         let arrPosts = []
+        let comments = await knex("comments")
+        // .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at")
+        // .where("comments.post_id", post.post_id)
+        .innerJoin("users", "comments.user_id", "users.id")
         posts.forEach(async (post) =>{
             let arrPhotos = []
             photos.forEach((photo) =>{
@@ -27,8 +31,23 @@ const listAllPosts = async (req, res) => {
                     arrPhotos.push(photo.image)
                 }
             })
-            let like = await knex("likes").where({user_id}).andWhere({post_id: id}).first()
-            like ? post.like = true : post.like = false
+            let arrComments = [] 
+            comments.forEach((comment) => {
+                if (post.post_id === comment.post_id){
+                    let objComment = {
+                        content: comment.content,
+                        username: comment.username,
+                        user_id: comment.user_id,
+                        comment_id: comment.id,
+                        created_at: comment.created_at
+                    }
+                    arrComments.push(objComment)
+                }
+            })
+            // let likes = await knex("likes").where({user_id: id}).andWhere({post_id: post.post_id}).first()
+            // like ? post.like = true : post.like = false
+
+            post.comments = arrComments
             post.image = arrPhotos
             arrPosts.push(post)
         })
@@ -108,7 +127,7 @@ const createNewPost = async (req, res) => {
             item.name = new Date().getTime() + "." + extension
             arrImages.push({
                 image: process.env.AWS_BUCKET_URL + item.name,
-                post_id: post_id.id
+                post_id: post_id.id || post_id
             })
             let photo = await uploadImage(item.name, item.data)
         })
@@ -127,12 +146,12 @@ const createNewPost = async (req, res) => {
         trx.rollback();
         return res.status(400).json({ message: "Formato de imagem inválido" });
     }
-
+ 
     //Renomeia a imagem para o timestamp atual
     image.name = new Date().getTime() + "." + extension;
     let photo = await uploadImage(image.name, image.data);
-    
-    let insertedPhoto = await knex("photos").transacting(trx).insert({image: photo, post_id})
+    console.log(post_id.id)
+    let insertedPhoto = await knex("photos").transacting(trx).insert({image: photo, post_id: post_id.id || post_id});
     if (!insertedPhoto) {
         trx.rollback();
         return res.status(400).json({message: "Erro ao criar post"})
