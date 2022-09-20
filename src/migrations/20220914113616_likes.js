@@ -6,15 +6,11 @@ exports.up = function (knex) {
         .unsigned()
         .references("id")
         .inTable("posts")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE");
       table
         .integer("post_id")
         .unsigned()
         .references("id")
         .inTable("posts")
-        .onDelete("CASCADE")
-        .onUpdate("CASCADE");
     });
   };
   
