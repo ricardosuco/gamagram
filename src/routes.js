@@ -1,8 +1,8 @@
 const express = require('express')
-const userController = require('../src/controllers/userController')
-const commentController = require('../src/controllers/commentController')
-const postController = require('../src/controllers/postController')
-const likeController = require('../src/controllers/likeController')
+const userController = require('./controllers/user_controller')
+const commentController = require('./controllers/comment_controller')
+const postController = require('./controllers/post_controller')
+const likeController = require('./controllers/like_controller')
 const auth = require('./middleware/auth')
 
 const routes = express();
