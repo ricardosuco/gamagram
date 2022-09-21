@@ -10,9 +10,10 @@ const listAllPosts = async (req, res) => {
 
     try {
         let posts = await knex("posts")
-            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image")
-            .where("user_id", "!=", id)
-            .innerJoin("users", "posts.user_id", "users.id")
+            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image", "likes.id as like")
+            .where("posts.user_id", "!=", id)
+            .innerJoin("users", "users.id", "posts.user_id")
+            .leftJoin("likes", "posts.id", "likes.post_id")
             .orderBy("created_at", "desc")
         if (!posts || posts.length < 1) {
             return res.status(400).json({ message: "Nenhum post encontrado" });
@@ -21,10 +22,9 @@ const listAllPosts = async (req, res) => {
         let photos = await knex("photos")
         let arrPosts = []
         let comments = await knex("comments")
-        // .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at")
-        // .where("comments.post_id", post.post_id)
-        // .innerJoin("users", "comments.user_id", "users.id")
-        // let likes = await knex("likes")
+        .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at", "comments.post_id")
+        .innerJoin("users", "users.id", "comments.user_id")
+        let likes = await knex("likes")
         posts.forEach(async (post) =>{
             let arrPhotos = []
             photos.forEach((photo) =>{
@@ -39,22 +39,17 @@ const listAllPosts = async (req, res) => {
                         content: comment.content,
                         username: comment.username,
                         user_id: comment.user_id,
-                        comment_id: comment.id,
+                        comment_id: comment.comment_id,
                         created_at: comment.created_at
                     }
                     arrComments.push(objComment)
                 }
             })
-            // let arrLikes = []
-            // likes.forEach((like) => {
-            //     if (post.post_id === like.post_id){
-            //         arrLikes.push(like)
-            //     }
-            // })
+
             // let like = await knex("likes").where({user_id: id}).andWhere({post_id: post.post_id}).first()
             // console.log(like)
             // like ? post.like = true : post.like = false
-
+            post.like ? post.like = true : post.like = false
             post.comments = arrComments
             post.image = arrPhotos
             arrPosts.push(post)
@@ -154,7 +149,7 @@ const createNewPost = async (req, res) => {
         trx.rollback();
         return res.status(400).json({ message: "Formato de imagem inválido" });
     }
- 
+
     //Renomeia a imagem para o timestamp atual
     image.name = new Date().getTime() + "." + extension;
     let photo = await uploadImage(image.name, image.data);

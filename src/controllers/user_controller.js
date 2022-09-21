@@ -14,11 +14,11 @@ const listAllUsers = async (req, res) => {
     if (search) {
       users = await knex("users")
         .select("name", "username", "image")
-        .orWhere("name", "like", `%${search}%`)
+        .orWhere("name", "ilike", `%${search}%`)
         .andWhere("id", "!=", id)
-        .orWhere("username", "like", `%${search}%`)
+        .orWhere("username", "ilike", `%${search}%`)
         .andWhere("id", "!=", id)
-        .orWhere("email", "like", `%${search}%`)
+        .orWhere("email", "ilike", `%${search}%`)
         .andWhere("id", "!=", id);
     } else {
       users = await knex("users")
@@ -48,7 +48,7 @@ const login = async (req, res) => {
       .orWhere("username", username)
       .first();
     if (!foundUser) {
-      return res.status(400).json({ message: "Email ou senha inválido" });
+      return res.status(400).json({ message: "Email/Username ou senha inválido" });
     }
 
     const verifyPassword = await bcrypt.compare(

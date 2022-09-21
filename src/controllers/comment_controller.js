@@ -70,7 +70,7 @@ const deleteComment = async (req, res) => {
   const user_id = req.user.id
 
   try {
-    const deletedComment = await knex("comments").where("id", id).andWhere("user_id", user_id).del().debug();
+    const deletedComment = await knex("comments").where("id", id).andWhere("user_id", user_id).del();
     if (!deletedComment) {
       return res
         .status(400)
