@@ -43,20 +43,7 @@ API no intuito de simular uma rede social
 
 <!-- ALTERAR OS PRE-REQUISITOS ABAIXO CONFORME NOSSO PROJETO -->
 
-### para instalar o Typescript
-> npm i -g typescript
-### para gerar o tsconfig.json
-> tsc --init
-### para instalar o Typescript em Dev
-> npm i --save-dev typescript
-### para instalar o @types do node.js
-> npm i --save-dev @types/node
-### para instalar o express
-> npm i --save express
-### para instalar o types do express
-> npm i --save @types/express
-### para instalar o ts-node-dev para auxiliar no desenvolvimento de Typescript dentro do node
-> npm i --save-dev ts-node-dev
+
 ### para instalar o http-status-codes
 > npm i --save http-status-codes
 ### para rodar as migrations
@@ -225,5 +212,14 @@ API no intuito de simular uma rede social
 #### Dados Retornados
 - Sucesso/Erro
 
+## 🦸 Autores
 
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/artstar10"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/37708374?v=4" width="100px;" alt=""/><br /><sub><b>Arthur Neves</b></sub></a><br /><a href="" title="Git"></a></td>
+    <td align="center"><a href="https://github.com/Gahbr"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/80289718?v=4" width="100px;" alt=""/><br /><sub><b>Gabriel Ribeiro</b></sub></a><br /><a href="https://github.com/Gahbr" title="Git"></a></td>
+    <td align="center"><a href="https://github.com/ricardosuco"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/45463245?v=4" width="100px;" alt=""/><br /><sub><b>Ricardo Avelino</b></sub></a><br /><a href="https://github.com/artstar10" title="Git"></a></td>
 
+  </tr>
+ 
+</table>
