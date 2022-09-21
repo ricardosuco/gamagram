@@ -69,7 +69,7 @@ const showPostById = async (req, res) => {
 
     try {
         let posts = await knex("posts").where("posts.id", id)
-            .select("posts.id as post_id", "users.id as user_id", "posts.caption", "posts.created_at", "users.username", "photos.image")
+            .select("posts.id as post_id", "users.id as user_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image", "photos.image")
             .innerJoin("photos", "posts.id", "photos.post_id")
             .innerJoin("users", "posts.user_id", "users.id")
             console.log(posts)
