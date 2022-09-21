@@ -219,6 +219,7 @@ API no intuito de simular uma rede social
     <td align="center"><a href="https://github.com/artstar10"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/37708374?v=4" width="100px;" alt=""/><br /><sub><b>Arthur Neves</b></sub></a><br /><a href="" title="Git"></a></td>
     <td align="center"><a href="https://github.com/Gahbr"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/80289718?v=4" width="100px;" alt=""/><br /><sub><b>Gabriel Ribeiro</b></sub></a><br /><a href="https://github.com/Gahbr" title="Git"></a></td>
     <td align="center"><a href="https://github.com/ricardosuco"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/45463245?v=4" width="100px;" alt=""/><br /><sub><b>Ricardo Avelino</b></sub></a><br /><a href="https://github.com/artstar10" title="Git"></a></td>
+    <td align="center"><a href="https://github.com/samarapaulasantos"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/52473984?v=4" width="100px;" alt=""/><br /><sub><b>Samara Paula</b></sub></a><br /><a href="https://github.com/samarapaulasantos" title="Git"></a></td>
 
   </tr>
  
