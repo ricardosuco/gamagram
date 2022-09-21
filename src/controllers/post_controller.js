@@ -23,7 +23,8 @@ const listAllPosts = async (req, res) => {
         let comments = await knex("comments")
         // .select("comments.content", "users.username", "comments.user_id", "comments.id as comment_id", "comments.created_at")
         // .where("comments.post_id", post.post_id)
-        .innerJoin("users", "comments.user_id", "users.id")
+        // .innerJoin("users", "comments.user_id", "users.id")
+        // let likes = await knex("likes")
         posts.forEach(async (post) =>{
             let arrPhotos = []
             photos.forEach((photo) =>{
@@ -44,7 +45,14 @@ const listAllPosts = async (req, res) => {
                     arrComments.push(objComment)
                 }
             })
-            // let likes = await knex("likes").where({user_id: id}).andWhere({post_id: post.post_id}).first()
+            // let arrLikes = []
+            // likes.forEach((like) => {
+            //     if (post.post_id === like.post_id){
+            //         arrLikes.push(like)
+            //     }
+            // })
+            // let like = await knex("likes").where({user_id: id}).andWhere({post_id: post.post_id}).first()
+            // console.log(like)
             // like ? post.like = true : post.like = false
 
             post.comments = arrComments
