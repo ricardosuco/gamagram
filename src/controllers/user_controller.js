@@ -14,11 +14,11 @@ const listAllUsers = async (req, res) => {
     if (search) {
       users = await knex("users")
         .select("name", "username", "image")
-        .orWhere("name", "like", `%${search}%`)
+        .orWhere("name", "ilike", `%${search}%`)
         .andWhere("id", "!=", id)
-        .orWhere("username", "like", `%${search}%`)
+        .orWhere("username", "ilike", `%${search}%`)
         .andWhere("id", "!=", id)
-        .orWhere("email", "like", `%${search}%`)
+        .orWhere("email", "ilike", `%${search}%`)
         .andWhere("id", "!=", id);
     } else {
       users = await knex("users")
@@ -48,7 +48,7 @@ const login = async (req, res) => {
       .orWhere("username", username)
       .first();
     if (!foundUser) {
-      return res.status(400).json({ message: "Email ou senha inválido" });
+      return res.status(400).json({ message: "Email/Username ou senha inválido" });
     }
 
     const verifyPassword = await bcrypt.compare(
@@ -78,6 +78,8 @@ const showUserByUsername = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "Usuário não encontrado" });
     }
+    let posts = await knex("posts").where("user_id", user.id).innerJoin("photos", "posts.id", "photos.post_id").select("posts.*", "photos.image");
+    user.posts = posts;
     const { password, ...foundUser } = user;
     return res.send(foundUser);
   } catch (error) {
@@ -96,15 +98,15 @@ const create = async (req, res) => {
     image = req.files.image;
   }
 
-  if (!name.trim()) {
+  if (!name) {
     return res.status(400).json({ message: "O campo nome é obrigatório" });
-  } else if (!username.trim()) {
-    return res.status(400).json({ message: "O usename nome é obrigatório" });
-  } else if (!email.trim()) {
+  } else if (!username) {
+    return res.status(400).json({ message: "O username nome é obrigatório" });
+  } else if (!email) {
     return res.status(400).json({ message: "O email nome é obrigatório" });
-  } else if (!password.trim()) {
+  } else if (!password) {
     return res.status(400).json({ message: "O password nome é obrigatório" });
-  } else if (password.trim().length < 6) {
+  } else if (password.length < 6) {
     return res
       .status(400)
       .json({ message: "A senha deve ter no mínimo 6 caracteres" });
@@ -157,13 +159,13 @@ const updateUser = async (req, res) => {
     image = req.files.image;
   }
 
-  if (!name.trim()) {
+  if (!name) {
     return res.status(400).json({ message: "O campo nome é obrigatório" });
-  } else if (!username.trim()) {
-    return res.status(400).json({ message: "O usename nome é obrigatório" });
-  } else if (!email.trim()) {
+  } else if (!username) {
+    return res.status(400).json({ message: "O username nome é obrigatório" });
+  } else if (!email) {
     return res.status(400).json({ message: "O email nome é obrigatório" });
-  } else if (password && password.trim().length < 6) {
+  } else if (password && password.length < 6) {
     return res
       .status(400)
       .json({ message: "A senha deve ter no mínimo 6 caracteres" });
@@ -192,17 +194,9 @@ const updateUser = async (req, res) => {
       password = await bcrypt.hash(password, 10);
     }
 
-    let userUpdated = await knex("users").where("id", id).update({
-        name,
-        image: photo,
-        username,
-        email,
-        password,
-        site,
-        bio,
-        phone,
-        gender
-    })
+    let userUpdated
+    if (photo) userUpdated = await knex("users").where("id", id).update({name, image: photo,username,email,password,site,bio, phone, gender})
+    else userUpdated = await knex("users").where("id", id).update({name, username, email, password, site, bio, phone, gender})
     if (!userUpdated) {
       return res
         .status(400)
