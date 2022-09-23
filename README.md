@@ -1,26 +1,33 @@
 <!-- #Projeto Integrador Gama Academy / ACATE - Gamagram -->
 
 # 💻 &nbsp;Sobre o repositório
+Projeto final da Gama Academy Dev For Tech da turma de Node.js ministrado pelo professor Ricardo Bontempo.
 
-Explorando o Estilo Arquitetural REST com Node.js
-
-API no intuito de simular uma rede social
+Esta é uma API no intuito de simular uma rede social chamada Gamagram. Explorando o Estilo Arquitetural REST com Node.js.
 
 <br>
 
 # 🛠 Tecnologias utilizadas 
+### Back end
 
-- Node.js
-- MySQL
-- Javascript
-- Express
-
-#### **Tecnologias**
-
- [![Node.js](https://img.shields.io/badge/-Node.js-333333?style=flat&logo=node.js)](https://nodejs.org/pt-br/)
- [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
  [![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+ [![Node.js](https://img.shields.io/badge/-Node.js-333333?style=flat&logo=node.js)](https://nodejs.org/pt-br/)
  [![Express](https://img.shields.io/badge/-Express-333333?style=flat&logo=express)](http://expressjs.com/pt-br/)
+ [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
+ [![Knex.js](https://tinyurl.com/ba56k89e)](knexjs.org/guide/#configuration-options)
+ [![Knex.js]( https://img.shields.io/badge/JWT-grey.svg?logo=JSON%20web%20tokens)](knexjs.org/guide/#configuration-options)
+
+
+
+### Front End
+
+[![HTML5](https://img.shields.io/badge/-HTML-333333?style=flat&logo=HTML5)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/-CSS-333333?style=flat&logo=CSS3)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/-JavaScript-333333?style=flat&logo=javascript)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+[![Vue.js](https://img.shields.io/badge/-Vue.js-333333?style=flat&logo=vue.js)](https://vuejs.org)
+[![Quasar]( https://img.shields.io/badge/-Quasar-333333?style=flat&logo=quasar)](https://quasar.dev)
+
+
 
 #### **Testes**
 
@@ -30,19 +37,23 @@ API no intuito de simular uma rede social
 #### **DevOps**
 
   [![GitHub](https://img.shields.io/badge/-GitHub-333333?style=flat&logo=github)](https://github.com)
+  ![Heroku](https://img.shields.io/badge/-Heroku-333333?style=flat&logo=heroku)
+  ![AWS]( https://img.shields.io/badge/AWS-grey.svg?logo=amazon-aws) 
+  ![Firebase](https://img.shields.io/badge/-Firebase-333333?style=flat&logo=firebase)
+ 
+  
+
 
 #### **Ferramentas de Desenvolvimento**
 
   [![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-333333?style=flat&logo=visual-studio-code&logoColor=007ACC)](https://code.visualstudio.com/)
   [![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)](https://insomnia.rest/download)
   [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
+   
   <br>
   
 
 # 😀 Pré requisitos globais: 
-
-<!-- ALTERAR OS PRE-REQUISITOS ABAIXO CONFORME NOSSO PROJETO -->
-
 
 ### para instalar o http-status-codes
 > npm i --save http-status-codes
@@ -54,9 +65,31 @@ API no intuito de simular uma rede social
 # 💽 Instalação:
 > npm install
 
+> criar um arquivo .env e colocar as seguintes variáveis de ambiente:
+~~~
+AWS_REGION=
+AWS_ACESS_KEY_ID=
+AWS_SECRET_ACESS_KEY=
+AWS_BUCKET_NAME=
+DB_CLIENT=
+DB_NAME=
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_PORT=
+JWT_SECRET=
+~~~
+
 <br>
 
-# Gamagram
+# 🏦 Banco de Dados
+
+<p align="center">
+<img src="./Gamagram - DER.png" alt="DER do banco de dados" width="700px" align="center">
+<p/>
+<br>
+
+# 🛒Regras de negócio
 
 ## O que será possivel fazer
  - [x] Cadastro 
@@ -85,7 +118,7 @@ API no intuito de simular uma rede social
  - Adicionar filtros nas imagens
  - Seguir usuários
 
-# Endpoints
+# 🛣 Endpoints
 
 
 ### [GET] - Usuário - "/username"
