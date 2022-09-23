@@ -50,8 +50,12 @@ Esta é uma API no intuito de simular uma rede social chamada Gamagram. Exploran
   [![Insomnia](https://img.shields.io/badge/-Insomnia-333333?style=flat&logo=insomnia)](https://insomnia.rest/download)
   [![MySQL](https://img.shields.io/badge/-MySQL-333333?style=flat&logo=Mysql)](https://www.mysql.com/)
    
-  <br>
   
+  #### Collection de requisições
+  
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Gamagram&uri=https%3A%2F%2Fgithub.com%2Fricardosuco%2Fgamagram%2Fblob%2Fmaster%2Fgamagram--collections)
+
+<br>
 
 # 😀 Pré requisitos globais: 
 
