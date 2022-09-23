@@ -64,11 +64,10 @@ API no intuito de simular uma rede social
  - [x] Ver os dados do perfil
  - [x] Editar dados do perfil
  - [x] Ver postagens de outros usuários
-- [ ] Ver quantidade de curtidas numa postagem
 - [x] Ver os comentários em uma postagem
- - [ ] Curtir postagens
+ - [x] Curtir postagens
  - [x] Comentar posts
- - [ ] Descurtir posts
+ - [x] Descurtir posts
  - [x] Excluir o próprio comentário
  - [x] Criar post
  - [x] Excluir o próprio post
@@ -84,6 +83,7 @@ API no intuito de simular uma rede social
  - Publicar stories
  - Adicionar filtros nas imagens
  - Seguir usuários
+ - Ver quantidade de curtidas em um post
 
 # Endpoints
 
