@@ -4,8 +4,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
-
-
 -- -----------------------------------------------------
 -- Schema gamagram
 -- -----------------------------------------------------
@@ -17,15 +15,15 @@ USE `gamagram` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `gamagram`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` TEXT NOT NULL,
-  `image` TEXT NULL DEFAULT NULL,
-  `username` TEXT UNIQUE NOT NULL,
-  `email` TEXT NOT UNIQUE NULL,
-  `password` TEXT NOT NULL,
-  `site` TEXT NULL DEFAULT NULL,
-  `bio` TEXT NULL DEFAULT NULL,
-  `phone` TEXT NULL DEFAULT NULL,
-  `gender` CHAR(1) NULL DEFAULT NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `image` VARCHAR(255) NULL DEFAULT NULL,
+  `username` VARCHAR(50) UNIQUE NOT NULL,
+  `email` VARCHAR(50) UNIQUE NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
+  `site` VARCHAR(100) NULL DEFAULT NULL,
+  `bio` VARCHAR(255) NULL DEFAULT NULL,
+  `phone` VARCHAR(15) NULL DEFAULT NULL,
+  `gender` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -39,7 +37,8 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`posts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `caption` TEXT NOT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `caption` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `user_id` (`user_id` ASC) VISIBLE,
   CONSTRAINT `posts_ibfk_1`
@@ -58,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`comments` (
   `post_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `content` TEXT NOT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `post_id` (`post_id` ASC) VISIBLE,
   INDEX `user_id` (`user_id` ASC) VISIBLE,
@@ -80,7 +80,8 @@ CREATE TABLE IF NOT EXISTS `gamagram`.`photos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `post_id` INT NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `image` TEXT NOT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `image` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `post_id` (`post_id` ASC) VISIBLE,
   CONSTRAINT `photos_ibfk_1`
