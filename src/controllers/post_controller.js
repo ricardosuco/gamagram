@@ -2,18 +2,16 @@ const knexfile = require("../knexfile");
 const knex = require("knex")(knexfile);
 const { uploadImage, deleteImage } = require("../services");
 
-//TODO: Inserir quantidade de comentarios e quantidade de curtidas por postagem (criar rotina que conta comentarios e curtidas)
-
 // Retorna todos os posts cadastrados no banco de dados, exceto do usuario atual. Este é o "feed"
 const listAllPosts = async (req, res) => {
     const { id } = req.user
 
     try {
         let posts = await knex("posts")
-            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image", "likes.id as like")
+            .select("users.id as user_id", "posts.id as post_id", "posts.caption", "posts.created_at", "users.username", "users.image as profile_image")
             .where("posts.user_id", "!=", id)
             .innerJoin("users", "users.id", "posts.user_id")
-            .leftJoin("likes", "posts.id", "likes.post_id")
+            // .leftJoin("likes", "posts.id", "likes.post_id")
             .orderBy("created_at", "desc")
         if (!posts || posts.length < 1) {
             return res.status(400).json({ message: "Nenhum post encontrado" });
@@ -45,14 +43,17 @@ const listAllPosts = async (req, res) => {
                     arrComments.push(objComment)
                 }
             })
-
-            // let like = await knex("likes").where({user_id: id}).andWhere({post_id: post.post_id}).first()
-            // console.log(like)
-            // like ? post.like = true : post.like = false
-            post.like ? post.like = true : post.like = false
+            post.like = false
             post.comments = arrComments
             post.image = arrPhotos
             arrPosts.push(post)
+        })
+        arrPosts.forEach((post) => {
+            likes.forEach((like) => {
+                if (like.post_id === post.post_id && like.user_id === id){
+                    post.like = true
+                } 
+            })
         })
         return res.status(200).json(arrPosts)
     } catch (error) {
